@@ -1,23 +1,86 @@
 #include "Camara.h"
 
-Camara::Camara()
+//Camara::Camara()
+//{
+
+//}
+
+Camara::Camara(Vec newEye, Vec newLookAt, Vec newUp)
 {
+    Up = newUp;
+    LookAt = newLookAt;
+    Eye = newEye;
+
+    getZaxis(LookAt, Eye);
+    getXaxis(Up, zaxis);
+    getYaxis(zaxis, xaxis);
 }
 
 Camara::~Camara()
 {
 }
 
+Vec Camara::getZaxis(Vec At, Vec Eye)
+{
+    //Up
+    zaxis = (At - Eye);
+    zaxis.Normalize();
+    return zaxis;
+}
+
+Vec Camara::getXaxis(Vec Up, Vec Zaxis)
+{
+    //Right
+    xaxis = Up.CrossVectors(Zaxis);
+    xaxis.Normalize();
+    return xaxis;
+}
+
+Vec Camara::getYaxis(Vec Zaxis, Vec Xaxis)
+{
+    //Front
+    yaxis = Zaxis.CrossVectors(Xaxis);
+    return yaxis;
+}
+
+void Camara::CamaraMove(Vec newVec)
+{
+    Eye += xaxis * newVec.getX();
+    Eye += yaxis * newVec.getY();
+    Eye += zaxis * newVec.getZ();
+
+    LookAt += xaxis * newVec.getX();
+    LookAt += yaxis * newVec.getY();
+    LookAt += zaxis * newVec.getZ();
+}
+
 float* Camara::getViewMatrix(Vec Up, Vec At, Vec Eye)
 {
-    Vec zaxis = (At - Eye);    
+    /*
+    //Up
+    zaxis = (At - Eye);    
     zaxis.Normalize();
 
-    Vec xaxis = Up.CrossVectors(zaxis); 
+    //Right
+    xaxis = Up.CrossVectors(zaxis); 
     xaxis.Normalize();
 
-    Vec yaxis = zaxis.CrossVectors(xaxis);     
+    //Front
+    yaxis = zaxis.CrossVectors(xaxis);     
+    */
 
+    float* viewMatrix = new float[16]{
+        xaxis.getX(), yaxis.getX(), zaxis.getX(), 0.0f,
+        xaxis.getY(), yaxis.getY(), zaxis.getY(), 0.0f,
+        xaxis.getZ(), yaxis.getZ(), zaxis.getZ(), 0.0f,
+      -xaxis.ProductPoint(Eye), -yaxis.ProductPoint(Eye), -zaxis.ProductPoint(Eye),  1
+    };
+
+    return viewMatrix;
+}
+
+float* Camara::getViewMatrix()
+{
     float* viewMatrix = new float[16]{
         xaxis.getX(), yaxis.getX(), zaxis.getX(), 0.0f,
         xaxis.getY(), yaxis.getY(), zaxis.getY(), 0.0f,

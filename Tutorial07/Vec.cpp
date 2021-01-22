@@ -43,11 +43,11 @@ Vec Vec::CrossVectors(Vec newVec)
 
 float Vec::ProductPoint(Vec newVec)
 {
-	X = (X * newVec.X);
-	Y = (Y * newVec.Y);
-	Z = (Z * newVec.Z);
+	float newX = (X * newVec.X);
+	float newY = (Y * newVec.Y);
+	float newZ = (Z * newVec.Z);
 
-	return X + Y + Z;
+	return newX + newY + newZ;
 }
 
 float Vec::Distance(Vec newVec)
@@ -61,3 +61,14 @@ Vec Vec::operator-(Vec Minus)
 {
 	return Vec(X - Minus.X, Y - Minus.Y, Z - Minus.Z);
 }
+
+Vec Vec::operator+=(Vec SumEqual)
+{
+	return Vec(X += SumEqual.X, Y += SumEqual.Y, Z += SumEqual.Z);
+}
+
+Vec Vec::operator*(float Multiply)
+{
+	return Vec(X * Multiply, Y * Multiply, Z * Multiply);
+}
+

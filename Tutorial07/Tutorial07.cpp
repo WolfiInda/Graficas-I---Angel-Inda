@@ -67,6 +67,7 @@ XMMATRIX                            g_World;
 XMMATRIX                            g_View;
 XMMATRIX                            g_Projection;
 XMFLOAT4                            g_vMeshColor( 0.7f, 0.7f, 0.7f, 1.0f );
+Camara                              C(Vec(0.0f, 3.0f, -6.0f), Vec(0.0f, 1.0f, 0.0f), Vec(0.0f, 1.0f, 0.0f));
 
 
 //--------------------------------------------------------------------------------------
@@ -486,7 +487,6 @@ HRESULT InitDevice()
     XMVECTOR Up = XMVectorSet( 0.0f, 1.0f, 0.0f, 0.0f ); */
     //g_View = XMMatrixLookAtLH( Eye, At, Up ); 
 
-    Camara C;
     Vec Eye = Vec(0.0f, 3.0f, -6.0f);
     Vec At = Vec(0.0f, 1.0f, 0.0f);
     Vec Up = Vec(0.0f, 1.0f, 0.0f);
@@ -499,8 +499,8 @@ HRESULT InitDevice()
     // Initialize the projection matrix
     //g_Projection = XMMatrixPerspectiveFovLH( XM_PIDIV4, width / (FLOAT)height, 0.01f, 100.0f );
     //g_Projection = XMMatrixOrthographicLH(width, (FLOAT)height, 0.01f, 100.0f);
-    //g_Projection = XMMATRIX(C.getPerspectiveMatrix(XM_PIDIV4, width / (FLOAT)height, 0.01f, 100.0f));
-    g_Projection = XMMATRIX(C.getOrthographicMatrix(width, height, 0.01f, 100.0f));
+    g_Projection = XMMATRIX(C.getPerspectiveMatrix(XM_PIDIV4, width / (FLOAT)height, 0.01f, 100.0f));
+   // g_Projection = XMMATRIX(C.getOrthographicMatrix(width, height, 0.01f, 100.0f));
     
     CBChangeOnResize cbChangesOnResize;
     cbChangesOnResize.mProjection = XMMatrixTranspose( g_Projection );
@@ -554,6 +554,42 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
         case WM_DESTROY:
             PostQuitMessage( 0 );
             break;
+
+        case WM_KEYDOWN: 
+        {
+            if (LOWORD(wParam) == 'A')
+            {
+                C.CamaraMove(Vec(-1, 0, 0));
+            }
+             
+            if (LOWORD(wParam) == 'S')
+            {
+                C.CamaraMove(Vec(0, -1, 0));
+            }
+               
+            if (LOWORD(wParam) == 'W')
+            {
+                C.CamaraMove(Vec(0, 1, 0));
+            }
+               
+            if (LOWORD(wParam) == 'D')
+            {
+                C.CamaraMove(Vec(1, 0, 0));
+            }
+               
+            if (LOWORD(wParam) == 'Q')
+            {
+                C.CamaraMove(Vec(0, 0, 1));
+            }
+              
+            if (LOWORD(wParam) == 'E')
+            {
+                C.CamaraMove(Vec(0, 0, -1));
+            }
+              
+            UINT a = LOWORD(wParam);
+            break;
+        }
 
         default:
             return DefWindowProc( hWnd, message, wParam, lParam );
@@ -610,6 +646,11 @@ void Render()
     cb.mWorld = XMMatrixTranspose( g_World );
     cb.vMeshColor = g_vMeshColor;
     g_pImmediateContext->UpdateSubresource( g_pCBChangesEveryFrame, 0, NULL, &cb, 0, 0 );
+
+    CBNeverChanges cbNeverChanges;
+    g_View = C.getViewMatrix();
+    cbNeverChanges.mView = XMMatrixTranspose(g_View);
+    g_pImmediateContext->UpdateSubresource(g_pCBNeverChanges, 0, NULL, &cbNeverChanges, 0, 0);
 
     //
     // Render the cube

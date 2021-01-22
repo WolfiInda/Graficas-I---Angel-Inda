@@ -32,5 +32,7 @@ public:
 
 
 	Vec operator-(Vec Minus);
+	Vec operator+=(Vec SumEqual);
+	Vec operator*(float Multiply);
 };
 
