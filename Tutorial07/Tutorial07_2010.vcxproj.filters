@@ -16,11 +16,13 @@
   <ItemGroup>
     <ClInclude Include="Camara.h" />
     <ClInclude Include="Vec.h" />
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tutorial07.cpp" />
     <ClCompile Include="Camara.cpp" />
     <ClCompile Include="Vec.cpp" />
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorial07.fx">

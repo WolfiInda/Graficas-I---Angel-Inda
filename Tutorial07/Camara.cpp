@@ -1,9 +1,29 @@
 #include "Camara.h"
 
-//Camara::Camara()
-//{
+Camara::Camara()
+{
 
-//}
+}
+
+Camara::Camara(Vec newEye, Vec newLookAt, Vec newUp, float newFOV, float newNear, float newFar, float newViewWidth, float newViewHeight, bool newPerspective)
+{
+    Perspective = newPerspective;
+
+    Up = newUp;
+    LookAt = newLookAt;
+    Eye = newEye;
+
+    FOV = newFOV;
+    Near = newNear;
+    Far = newFar;
+    ViewWidth = newViewWidth;
+    ViewHeight = newViewHeight;
+
+    setZaxis();
+    setXaxis();
+    setYaxis();
+}
+
 
 Camara::Camara(Vec newEye, Vec newLookAt, Vec newUp)
 {
@@ -11,36 +31,33 @@ Camara::Camara(Vec newEye, Vec newLookAt, Vec newUp)
     LookAt = newLookAt;
     Eye = newEye;
 
-    getZaxis(LookAt, Eye);
-    getXaxis(Up, zaxis);
-    getYaxis(zaxis, xaxis);
+    setZaxis();
+    setXaxis();
+    setYaxis();
 }
 
 Camara::~Camara()
 {
 }
 
-Vec Camara::getZaxis(Vec At, Vec Eye)
+void Camara::setZaxis()
 {
     //Up
-    zaxis = (At - Eye);
+    zaxis = (LookAt - Eye);
     zaxis.Normalize();
-    return zaxis;
 }
 
-Vec Camara::getXaxis(Vec Up, Vec Zaxis)
+void Camara::setXaxis()
 {
     //Right
-    xaxis = Up.CrossVectors(Zaxis);
+    xaxis = Up.CrossVectors(zaxis);
     xaxis.Normalize();
-    return xaxis;
 }
 
-Vec Camara::getYaxis(Vec Zaxis, Vec Xaxis)
+void Camara::setYaxis()
 {
     //Front
-    yaxis = Zaxis.CrossVectors(Xaxis);
-    return yaxis;
+    yaxis = zaxis.CrossVectors(xaxis);
 }
 
 void Camara::CamaraMove(Vec newVec)
@@ -91,6 +108,18 @@ float* Camara::getViewMatrix()
     return viewMatrix;
 }
 
+float* Camara::getProyection()
+{
+    if (Perspective == true)
+    {
+        return getPerspectiveMatrix(FOV, ViewWidth / ViewHeight, Near, Far);
+    }
+    else
+    {
+        return getOrthographicMatrix(ViewWidth, ViewHeight, Near, Far);
+    }
+}
+
 float* Camara::getPerspectiveMatrix(float FOV, float AspectRatio, float Near, float Far)
 {
     float Height = cos(FOV * .5) / sin(FOV * .5);
@@ -105,11 +134,29 @@ float* Camara::getPerspectiveMatrix(float FOV, float AspectRatio, float Near, fl
 }
 
 float* Camara::getOrthographicMatrix(float ViewWidth, float ViewHeight, float Near, float Far)
-{
+{ 
     return new float[16]{
         (2.0f / ViewWidth), 0.0f, 0.0f, 0.0f,
         0.0f, (2.0f / ViewHeight), 0.0f, 0.0f,
         0.0f, 0.0f, (1.0f / (Far - Near)), 0.0f,
         0.0f, 0.0f, (-(1.0f / (Far - Near))) * Near, 1.0f 
     };
+}
+
+Vec Camara::setMouseRotate(Vec MouseVec)
+{
+    return Vec(MouseVec.getX(), MouseVec.getY(), 0);
+}
+
+Vec Camara::getRotation(Vec MouseOld, Vec MouseNew)
+{
+    MouseNew -= MouseOld;
+    MouseNew /= 100;
+    LookAt += MouseNew;
+
+    setZaxis();
+    setXaxis();
+    setYaxis(); 
+
+    return LookAt;
 }

@@ -62,6 +62,16 @@ Vec Vec::operator-(Vec Minus)
 	return Vec(X - Minus.X, Y - Minus.Y, Z - Minus.Z);
 }
 
+Vec Vec::operator-=(Vec MinusEqual)
+{
+	return Vec(X -= MinusEqual.X, Y -= MinusEqual.Y, Z -= MinusEqual.Z);
+}
+
+Vec Vec::operator+(Vec Sum)
+{
+	return Vec(X + Sum.X, Y + Sum.Y, Z + Sum.Z);
+}
+
 Vec Vec::operator+=(Vec SumEqual)
 {
 	return Vec(X += SumEqual.X, Y += SumEqual.Y, Z += SumEqual.Z);
@@ -70,5 +80,15 @@ Vec Vec::operator+=(Vec SumEqual)
 Vec Vec::operator*(float Multiply)
 {
 	return Vec(X * Multiply, Y * Multiply, Z * Multiply);
+}
+
+Vec Vec::operator=(float Equal)
+{
+	return Vec(X = Equal, X = Equal, Z = Equal);
+}
+
+Vec Vec::operator/=(int DivisionEqual)
+{
+	return Vec(X /= DivisionEqual, Y /= DivisionEqual, Z /= DivisionEqual);
 }
 

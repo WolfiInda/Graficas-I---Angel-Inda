@@ -9,7 +9,7 @@ public:
 	~Vec();
 
 private:
-	float Z = 0, Y = 0, X = 0;
+	float X = 0, Y = 0, Z = 0;
 
 public:
 	//X
@@ -32,7 +32,11 @@ public:
 
 
 	Vec operator-(Vec Minus);
+	Vec operator-=(Vec MinusEqual);
+	Vec operator+(Vec Sum);
 	Vec operator+=(Vec SumEqual);
 	Vec operator*(float Multiply);
+	Vec operator=(float Equal);
+	Vec operator/=(int DivisionEqual);
 };
 
