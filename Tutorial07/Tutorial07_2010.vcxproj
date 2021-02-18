@@ -374,7 +374,10 @@
   <ItemGroup />
   <ItemGroup>
     <ClCompile Include="Camara.cpp" />
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="DeviceContext.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="Tutorial07.cpp" />
     <ClCompile Include="Vec.cpp" />
   </ItemGroup>
@@ -383,8 +386,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camara.h" />
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="DeviceContext.h" />
     <ClInclude Include="Mesh.h" />
     <CLInclude Include="resource.h" />
+    <ClInclude Include="SwapChain.h" />
     <ClInclude Include="Vec.h" />
     <ResourceCompile Include="Tutorial07.rc" />
   </ItemGroup>

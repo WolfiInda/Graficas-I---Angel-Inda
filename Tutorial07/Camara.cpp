@@ -42,21 +42,21 @@ Camara::~Camara()
 
 void Camara::setZaxis()
 {
-    //Up
+    //Front
     zaxis = (LookAt - Eye);
     zaxis.Normalize();
 }
 
 void Camara::setXaxis()
 {
-    //Right
+    //Right - Up Cross Front
     xaxis = Up.CrossVectors(zaxis);
     xaxis.Normalize();
 }
 
 void Camara::setYaxis()
 {
-    //Front
+    //Up - Front cross Right
     yaxis = zaxis.CrossVectors(xaxis);
 }
 

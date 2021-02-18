@@ -15,6 +15,7 @@
 #include "Vec.h"
 #include <windowsx.h>
 #include "Mesh.h"
+#include "Device.h"
 
 //--------------------------------------------------------------------------------------
 // Structures

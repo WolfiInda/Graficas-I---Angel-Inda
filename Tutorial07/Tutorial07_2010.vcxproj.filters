@@ -17,12 +17,18 @@
     <ClInclude Include="Camara.h" />
     <ClInclude Include="Vec.h" />
     <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Device.h" />
+    <ClInclude Include="DeviceContext.h" />
+    <ClInclude Include="SwapChain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Tutorial07.cpp" />
     <ClCompile Include="Camara.cpp" />
     <ClCompile Include="Vec.cpp" />
     <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="Device.cpp" />
+    <ClCompile Include="DeviceContext.cpp" />
+    <ClCompile Include="SwapChain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tutorial07.fx">
