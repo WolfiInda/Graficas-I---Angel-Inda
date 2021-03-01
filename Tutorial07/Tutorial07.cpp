@@ -16,6 +16,10 @@
 #include <windowsx.h>
 #include "Mesh.h"
 #include "Device.h"
+#include "imgui.h"
+#include "imgui_impl_win32.h"
+#include "imgui_impl_dx11.h"
+#include "imgui.h"
 
 //--------------------------------------------------------------------------------------
 // Structures
@@ -78,12 +82,17 @@ Mesh                                M;
 //--------------------------------------------------------------------------------------
 // Forward declarations
 //--------------------------------------------------------------------------------------
+extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam);
+extern void fnGraphicsModule();
+
 HRESULT InitWindow( HINSTANCE hInstance, int nCmdShow );
 HRESULT InitDevice();
 void CleanupDevice();
 LRESULT CALLBACK    WndProc( HWND, UINT, WPARAM, LPARAM );
 void Update();
 void Render();
+
+
 
 //--------------------------------------------------------------------------------------
 // Entry point to the program. Initializes everything and goes into a message processing 
@@ -190,6 +199,28 @@ HRESULT CompileShaderFromFile( WCHAR* szFileName, LPCSTR szEntryPoint, LPCSTR sz
         return hr;
     }
     if( pErrorBlob ) pErrorBlob->Release();
+
+    return S_OK;
+}
+
+
+/**
+ * @brief   Init the UI.
+ * @bug     No know Bugs.
+ * @return  #HRESULT: Status code.
+ */
+HRESULT InitImgUI()
+{
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer back ends
+    ImGui_ImplWin32_Init(g_hWnd);
+    ImGui_ImplDX11_Init(g_pd3dDevice, g_pImmediateContext);
 
     return S_OK;
 }
@@ -586,8 +617,12 @@ LRESULT CALLBACK WndProc( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam 
     PAINTSTRUCT ps;
     HDC hdc;
 
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, message, wParam, lParam))
+        return 1;
+
     switch( message )
     {
+
         case WM_PAINT:
             hdc = BeginPaint( hWnd, &ps );
             EndPaint( hWnd, &ps );
@@ -706,6 +741,37 @@ void Update()
     cbChangesOnResize.mProjection = XMMatrixTranspose(g_Projection);
     g_pImmediateContext->UpdateSubresource(g_pCBChangeOnResize, 0, NULL, &cbChangesOnResize, 0, 0);
 }
+
+void UIRender()
+{
+    // Start the Dear ImGui frame
+    ImGui_ImplDX11_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+
+    // example window
+    ImGui::ShowDemoWindow();
+
+    /* if (ImGui::Begin("Another Window", nullptr))
+     {
+         float pos[3]{0,0,0};
+         ImGui::InputFloat3("Cam Pos", pos, "%.2f");
+         ImGui::Text("Hello from another window!");
+     }
+     ImGui::End();
+
+     if (ImGui::Begin("Another Windowx2", nullptr))
+     {
+         ImGui::Text("Hello from another window!");
+     }
+     ImGui::End();
+
+     // render UI
+     ImGui::Render();
+     ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+ }
+
+
 
 //--------------------------------------------------------------------------------------
 // Render a frame
