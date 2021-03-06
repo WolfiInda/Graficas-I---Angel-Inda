@@ -620,6 +620,7 @@ namespace GraphicsModule
 
    void test::Update()
    {
+#if defined(DX11)
        static bool PrimerFrame = true;
 
        *Cursor_Old = *Cursor_New;
@@ -689,6 +690,7 @@ namespace GraphicsModule
        CBChangeOnResize cbChangesOnResize;
        cbChangesOnResize.mProjection = XMMatrixTranspose(g_Projection);
        g_RenderManager->CUpdateSubresource(g_pCBChangeOnResize->getBuffer_DIRECT(), 0, NULL, &cbChangesOnResize, 0, 0);
+#endif
    }
 
   void test::Render()

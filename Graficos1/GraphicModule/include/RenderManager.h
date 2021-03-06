@@ -11,6 +11,7 @@ public:
 	~RenderManager();
 
 public:
+#if defined(DX11)
 	/////////////////////Device/////////////////////
 	HRESULT CD3D11CreateDeviceAndSwapChain(
 		IDXGIAdapter*				pAdapter,
@@ -215,10 +216,13 @@ public:
 	ID3D11Device*& getDevice_DIRECT() { return Cg_pd3dDevice_DX11; }
 	ID3D11DeviceContext*& getImmediateContext_DIRECT() { return Cg_pImmediateContext_DX11; }
 	IDXGISwapChain*& getSwapChain_DIRECT() { return Cg_pSwapChain_DX11; }
+#endif
 
 private:
+#if defined(DX11)
 	ID3D11Device* Cg_pd3dDevice_DX11;
 	ID3D11DeviceContext* Cg_pImmediateContext_DX11;
 	IDXGISwapChain* Cg_pSwapChain_DX11;
+#endif
 };
 

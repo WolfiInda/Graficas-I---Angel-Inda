@@ -13,10 +13,13 @@ public:
 
 public:
 	void CRelease_DIRECT();
+#if defined(DX11)
 	ID3D11RenderTargetView*& getRenderTargetView_DIRECT() { return Cg_pRenderTargetView_DX11; }
+#endif
 
 private:
+#if defined(DX11)
 	ID3D11RenderTargetView* Cg_pRenderTargetView_DX11;
-
+#endif
 };
 

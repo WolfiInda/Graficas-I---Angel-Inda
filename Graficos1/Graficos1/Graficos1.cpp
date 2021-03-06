@@ -55,7 +55,7 @@ LRESULT CALLBACK WndProc(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
   case WM_DESTROY:
       PostQuitMessage(0);
       break;
-
+#if defined(DX11)
   case WM_KEYDOWN:
   {
       if (LOWORD(_wParam) == 'A')
@@ -97,6 +97,7 @@ LRESULT CALLBACK WndProc(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
       break;
     }
   }
+#endif
   return ::DefWindowProc(_hwnd, _msg, _wParam, _lParam);
 }
 
@@ -107,8 +108,10 @@ LRESULT CALLBACK WndProc(HWND _hwnd, UINT _msg, WPARAM _wParam, LPARAM _lParam)
  * @bug     No know Bugs.
  * @return  #HRESULT: Status code.
  */
+#if defined(DX11)
 HRESULT InitWindow(LONG _width, LONG _height)
 {
+
   // Register class
   WNDCLASSEX wcex;
   wcex.cbSize = sizeof(WNDCLASSEX);
@@ -140,7 +143,9 @@ HRESULT InitWindow(LONG _width, LONG _height)
   ShowWindow(g_hwnd, SW_SHOWNORMAL);
 
   return S_OK;
+#endif
 }
+
 
 /**
  * @brief   Init the UI.
@@ -213,12 +218,14 @@ void Render()
 
 int main()
 {
+#if defined(DX11)
   // create the window and console
   if (FAILED(InitWindow(1280, 720)))
   {
     DestroyWindow(g_hwnd);
     return 0;
   }
+#endif
 
   // create Graphic API interface
   if (FAILED(MiObj.InitDevice(g_hwnd)))
@@ -249,7 +256,9 @@ int main()
     }
     else
     {
+#if defined(DX11)
       MiObj.Update();
+#endif
       Render();
     }
   }
