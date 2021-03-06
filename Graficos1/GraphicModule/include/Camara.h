@@ -40,6 +40,11 @@ public:
 
 	void CamaraMove(Vec newVec);
 
+	void setWidth(int newwidth) { ViewWidth = newwidth; }
+	int getWidth() { return ViewWidth; }
+	void setheight(int newheight) { ViewHeight = newheight; }
+	int getheight() { return ViewHeight ; }
+
 	float* getViewMatrix(Vec Up, Vec At, Vec Eye);
 	float* getViewMatrix();
 	float* getProyection();

@@ -226,3 +226,5 @@ private:
 #endif
 };
 
+extern RenderManager* getManagerObj();
+

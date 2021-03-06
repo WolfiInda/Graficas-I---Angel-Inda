@@ -118,9 +118,10 @@ namespace GraphicsModule
 
     HRESULT InitDevice(HWND _hwnd);
 
-
+    void Resize(int width, int height);
     void Update();
     void Render();
+
 
     void CleanupDevice();
     //void createBuffer(miBufferDesc _desc, MiBuffer& _outBuffer)

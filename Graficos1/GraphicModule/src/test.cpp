@@ -693,6 +693,15 @@ namespace GraphicsModule
 #endif
    }
 
+
+   void test::Resize(int width, int height)
+   {
+#if defined(DX11)
+       C.setheight(height);
+       C.setWidth(width);
+#endif
+   }
+
   void test::Render()
   {
 #if defined(DX11)

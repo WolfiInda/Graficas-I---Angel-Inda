@@ -240,3 +240,13 @@ void RenderManager::CRelease_SwapChain_DIRECT()
 	Cg_pSwapChain_DX11->Release();
 }
 #endif
+
+extern RenderManager* getManagerObj()
+{
+	static RenderManager* pRender = nullptr;
+	if (pRender == nullptr)
+	{
+		pRender = new RenderManager();
+	}
+	return pRender;
+}
